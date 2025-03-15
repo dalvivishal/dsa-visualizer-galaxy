@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import {
   createGrid,
@@ -21,14 +20,15 @@ import AnimatedCard from '@/components/ui/AnimatedCard';
 
 interface PathfindingVisualizerProps {
   className?: string;
+  algorithm?: string; // Make this prop optional with a default value
 }
 
-const PathfindingVisualizer: React.FC<PathfindingVisualizerProps> = ({ className }) => {
+const PathfindingVisualizer: React.FC<PathfindingVisualizerProps> = ({ className, algorithm: externalAlgorithm }) => {
   const [grid, setGrid] = useState<Grid>([]);
   const [isRunning, setIsRunning] = useState<boolean>(false);
   const [isPaused, setIsPaused] = useState<boolean>(false);
   const [speed, setSpeed] = useState<number>(5);
-  const [algorithm, setAlgorithm] = useState<string>('dijkstra');
+  const [algorithm, setAlgorithm] = useState<string>(externalAlgorithm || 'dijkstra');
   const [gridSize, setGridSize] = useState<string>('10x10');
   
   const animationRef = useRef<number | null>(null);
@@ -36,6 +36,12 @@ const PathfindingVisualizer: React.FC<PathfindingVisualizerProps> = ({ className
   const pathRef = useRef<Cell[]>([]);
   const currentStepRef = useRef<number>(0);
   const isVisualizingPathRef = useRef<boolean>(false);
+
+  useEffect(() => {
+    if (externalAlgorithm) {
+      setAlgorithm(externalAlgorithm.toLowerCase());
+    }
+  }, [externalAlgorithm]);
 
   useEffect(() => {
     initializeGrid();

@@ -5,7 +5,7 @@ import BinaryTreeVisualizer from '@/components/visualizations/BinaryTreeVisualiz
 import AnimatedCard from '@/components/ui/AnimatedCard';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import CodeExecutionVisualizer from '@/components/visualizations/CodeExecutionVisualizer';
-import { getCodeSnippetsForAlgorithm } from '@/utils/algorithmCodeSnippets';
+import { getCodeSnippetsForAlgorithm } from '@/utils/codeSnippets';
 
 const Trees = () => {
   const [traversalType, setTraversalType] = useState<string>('inOrder');
@@ -69,10 +69,6 @@ const Trees = () => {
         
         <BinaryTreeVisualizer 
           className="mb-8" 
-          onTraversalStep={(nodeValue) => {
-            // This would be implemented in BinaryTreeVisualizer to update the active code snippet
-            // based on the current traversal step
-          }}
           traversalType={traversalType}
         />
         

@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Layout } from '@/components/Layout';
 import PathfindingVisualizer from '@/components/visualizations/PathfindingVisualizer';
@@ -59,10 +60,6 @@ const Graphs = () => {
         
         <PathfindingVisualizer 
           className="mb-8" 
-          onAlgorithmStep={(step) => {
-            // This would be implemented in PathfindingVisualizer to update the active code snippet
-            // based on the current algorithm step
-          }}
           algorithm={algorithm}
         />
         

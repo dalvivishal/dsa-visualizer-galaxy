@@ -19,6 +19,7 @@ import {
 import VisualizerControls from '@/components/ui/VisualizerControls';
 import { toast } from 'sonner';
 import AnimatedCard from '@/components/ui/AnimatedCard';
+import { mapTreeTraversalStepToCodeSnippet } from '@/utils/codeSnippets';
 
 interface TreeNodeVisualizerProps {
   node: TreeNode;
@@ -105,14 +106,15 @@ const TreeNodeVisualizer: React.FC<TreeNodeVisualizerProps> = ({
 
 interface BinaryTreeVisualizerProps {
   className?: string;
+  traversalType?: string; // Make this prop optional with a default value
 }
 
-const BinaryTreeVisualizer: React.FC<BinaryTreeVisualizerProps> = ({ className }) => {
+const BinaryTreeVisualizer: React.FC<BinaryTreeVisualizerProps> = ({ className, traversalType: externalTraversalType }) => {
   const [tree, setTree] = useState<TreeNode | null>(null);
   const [isRunning, setIsRunning] = useState<boolean>(false);
   const [isPaused, setIsPaused] = useState<boolean>(false);
   const [speed, setSpeed] = useState<number>(5);
-  const [traversalType, setTraversalType] = useState<string>('inorder');
+  const [traversalType, setTraversalType] = useState<string>(externalTraversalType || 'inorder');
   const [traversalResult, setTraversalResult] = useState<number[]>([]);
   const [activeNode, setActiveNode] = useState<number | null>(null);
   
@@ -120,6 +122,13 @@ const BinaryTreeVisualizer: React.FC<BinaryTreeVisualizerProps> = ({ className }
   const traversalStepsRef = useRef<Array<{ values: number[], active: number }>>([]);
   const currentStepRef = useRef<number>(0);
   const treeContainerRef = useRef<HTMLDivElement>(null);
+
+  // Update internal traversalType when externalTraversalType changes
+  useEffect(() => {
+    if (externalTraversalType) {
+      setTraversalType(externalTraversalType.toLowerCase());
+    }
+  }, [externalTraversalType]);
 
   useEffect(() => {
     initializeTree();
