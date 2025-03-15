@@ -6,8 +6,7 @@ import {
   selectionSort, 
   insertionSort,
   quickSort,
-  mergeSort,
-  sleep 
+  mergeSort
 } from '@/utils/algorithmUtils';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -19,6 +18,8 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import VisualizerControls from '@/components/ui/VisualizerControls';
+import CodeExecutionVisualizer from '@/components/visualizations/CodeExecutionVisualizer';
+import { getCodeSnippetsForAlgorithm, mapSortingStepToCodeSnippet } from '@/utils/algorithmCodeSnippets';
 import { toast } from 'sonner';
 import AnimatedCard from '@/components/ui/AnimatedCard';
 
@@ -34,6 +35,7 @@ const SortingVisualizer: React.FC<SortingVisualizerProps> = ({ className }) => {
   const [speed, setSpeed] = useState<number>(5);
   const [algorithm, setAlgorithm] = useState<string>('bubble');
   const [activeIndices, setActiveIndices] = useState<number[]>([]);
+  const [activeCodeSnippetId, setActiveCodeSnippetId] = useState<string | null>(null);
   
   const animationRef = useRef<number | null>(null);
   const sortingStepsRef = useRef<number[][]>([]);
@@ -47,6 +49,11 @@ const SortingVisualizer: React.FC<SortingVisualizerProps> = ({ className }) => {
       }
     };
   }, [arraySize]);
+
+  useEffect(() => {
+    // Update active code snippet whenever algorithm changes
+    setActiveCodeSnippetId(getCodeSnippetsForAlgorithm(algorithm)[0]?.id || null);
+  }, [algorithm]);
 
   const generateNewArray = () => {
     const newArray = generateRandomArray(arraySize, 5, 100);
@@ -64,6 +71,8 @@ const SortingVisualizer: React.FC<SortingVisualizerProps> = ({ className }) => {
     setIsPaused(false);
     sortingStepsRef.current = [];
     currentStepRef.current = 0;
+    // Reset code snippet to the first one for the selected algorithm
+    setActiveCodeSnippetId(getCodeSnippetsForAlgorithm(algorithm)[0]?.id || null);
   };
 
   const getSortingSteps = (algorithmName: string, arr: number[]): number[][] => {
@@ -108,6 +117,9 @@ const SortingVisualizer: React.FC<SortingVisualizerProps> = ({ className }) => {
     const currentArray = sortingStepsRef.current[currentStepRef.current];
     setArray([...currentArray]);
     
+    // Update the active code snippet based on current step
+    updateActiveCodeSnippet();
+    
     // Highlight indices that changed
     if (currentStepRef.current > 0) {
       const prevArray = sortingStepsRef.current[currentStepRef.current - 1];
@@ -128,6 +140,18 @@ const SortingVisualizer: React.FC<SortingVisualizerProps> = ({ className }) => {
         startAnimation();
       }
     }, delayMs);
+  };
+  
+  const updateActiveCodeSnippet = () => {
+    const snippetId = mapSortingStepToCodeSnippet(
+      algorithm, 
+      currentStepRef.current,
+      sortingStepsRef.current.length
+    );
+    
+    if (snippetId) {
+      setActiveCodeSnippetId(snippetId);
+    }
   };
 
   const handlePlay = () => {
@@ -159,6 +183,9 @@ const SortingVisualizer: React.FC<SortingVisualizerProps> = ({ className }) => {
       const currentArray = sortingStepsRef.current[currentStepRef.current];
       setArray([...currentArray]);
       
+      // Update code snippet for this step
+      updateActiveCodeSnippet();
+      
       // Highlight indices that changed
       if (currentStepRef.current > 0) {
         const prevArray = sortingStepsRef.current[currentStepRef.current - 1];
@@ -186,6 +213,9 @@ const SortingVisualizer: React.FC<SortingVisualizerProps> = ({ className }) => {
     if (currentStepRef.current > 0) {
       setIsPaused(true);
       currentStepRef.current--;
+      
+      // Update code snippet
+      updateActiveCodeSnippet();
       
       if (currentStepRef.current > 0) {
         const currentArray = sortingStepsRef.current[currentStepRef.current - 1];
@@ -267,6 +297,13 @@ const SortingVisualizer: React.FC<SortingVisualizerProps> = ({ className }) => {
             </Button>
           </div>
         </div>
+        
+        {/* Code Execution Visualizer */}
+        <CodeExecutionVisualizer 
+          snippets={getCodeSnippetsForAlgorithm(algorithm)}
+          activeSnippetId={activeCodeSnippetId}
+          className="mb-6"
+        />
         
         <div className="mb-6">
           <div className="flex items-end h-64 w-full justify-around">

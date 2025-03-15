@@ -1,10 +1,26 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Layout } from '@/components/Layout';
 import BinaryTreeVisualizer from '@/components/visualizations/BinaryTreeVisualizer';
 import AnimatedCard from '@/components/ui/AnimatedCard';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import CodeExecutionVisualizer from '@/components/visualizations/CodeExecutionVisualizer';
+import { getCodeSnippetsForAlgorithm } from '@/utils/algorithmCodeSnippets';
 
 const Trees = () => {
+  const [traversalType, setTraversalType] = useState<string>('inOrder');
+  const [activeCodeSnippetId, setActiveCodeSnippetId] = useState<string | null>(null);
+
+  useEffect(() => {
+    // Set the first code snippet as active when traversal type changes
+    const snippets = getCodeSnippetsForAlgorithm(traversalType);
+    setActiveCodeSnippetId(snippets[0]?.id || null);
+  }, [traversalType]);
+
+  const handleTabChange = (value: string) => {
+    setTraversalType(value);
+  };
+
   return (
     <Layout>
       <section className="container mx-auto px-4 py-16">
@@ -17,7 +33,48 @@ const Trees = () => {
           </p>
         </AnimatedCard>
         
-        <BinaryTreeVisualizer className="mb-8" />
+        <AnimatedCard className="mb-8">
+          <Tabs defaultValue="inOrder" onValueChange={handleTabChange}>
+            <TabsList className="mb-4">
+              <TabsTrigger value="inOrder">In-Order</TabsTrigger>
+              <TabsTrigger value="preOrder">Pre-Order</TabsTrigger>
+              <TabsTrigger value="postOrder">Post-Order</TabsTrigger>
+            </TabsList>
+            
+            <TabsContent value="inOrder">
+              <CodeExecutionVisualizer
+                snippets={getCodeSnippetsForAlgorithm('inOrder')}
+                activeSnippetId={activeCodeSnippetId}
+                className="mb-4"
+              />
+            </TabsContent>
+            
+            <TabsContent value="preOrder">
+              <CodeExecutionVisualizer
+                snippets={getCodeSnippetsForAlgorithm('preOrder')}
+                activeSnippetId={activeCodeSnippetId}
+                className="mb-4"
+              />
+            </TabsContent>
+            
+            <TabsContent value="postOrder">
+              <CodeExecutionVisualizer
+                snippets={getCodeSnippetsForAlgorithm('postOrder')}
+                activeSnippetId={activeCodeSnippetId}
+                className="mb-4"
+              />
+            </TabsContent>
+          </Tabs>
+        </AnimatedCard>
+        
+        <BinaryTreeVisualizer 
+          className="mb-8" 
+          onTraversalStep={(nodeValue) => {
+            // This would be implemented in BinaryTreeVisualizer to update the active code snippet
+            // based on the current traversal step
+          }}
+          traversalType={traversalType}
+        />
         
         <AnimatedCard delay={200} className="mb-8">
           <div className="bg-muted/50 rounded-lg p-6">

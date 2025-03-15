@@ -1,10 +1,26 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Layout } from '@/components/Layout';
 import PathfindingVisualizer from '@/components/visualizations/PathfindingVisualizer';
 import AnimatedCard from '@/components/ui/AnimatedCard';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import CodeExecutionVisualizer from '@/components/visualizations/CodeExecutionVisualizer';
+import { getCodeSnippetsForAlgorithm } from '@/utils/algorithmCodeSnippets';
 
 const Graphs = () => {
+  const [algorithm, setAlgorithm] = useState<string>('bfs');
+  const [activeCodeSnippetId, setActiveCodeSnippetId] = useState<string | null>(null);
+
+  useEffect(() => {
+    // Set the first code snippet as active when algorithm changes
+    const snippets = getCodeSnippetsForAlgorithm(algorithm);
+    setActiveCodeSnippetId(snippets[0]?.id || null);
+  }, [algorithm]);
+
+  const handleTabChange = (value: string) => {
+    setAlgorithm(value);
+  };
+
   return (
     <Layout>
       <section className="container mx-auto px-4 py-16">
@@ -17,7 +33,39 @@ const Graphs = () => {
           </p>
         </AnimatedCard>
         
-        <PathfindingVisualizer className="mb-8" />
+        <AnimatedCard className="mb-8">
+          <Tabs defaultValue="bfs" onValueChange={handleTabChange}>
+            <TabsList className="mb-4">
+              <TabsTrigger value="bfs">BFS</TabsTrigger>
+              <TabsTrigger value="dijkstra">Dijkstra's Algorithm</TabsTrigger>
+            </TabsList>
+            
+            <TabsContent value="bfs">
+              <CodeExecutionVisualizer
+                snippets={getCodeSnippetsForAlgorithm('bfs')}
+                activeSnippetId={activeCodeSnippetId}
+                className="mb-4"
+              />
+            </TabsContent>
+            
+            <TabsContent value="dijkstra">
+              <CodeExecutionVisualizer
+                snippets={getCodeSnippetsForAlgorithm('dijkstra')}
+                activeSnippetId={activeCodeSnippetId}
+                className="mb-4"
+              />
+            </TabsContent>
+          </Tabs>
+        </AnimatedCard>
+        
+        <PathfindingVisualizer 
+          className="mb-8" 
+          onAlgorithmStep={(step) => {
+            // This would be implemented in PathfindingVisualizer to update the active code snippet
+            // based on the current algorithm step
+          }}
+          algorithm={algorithm}
+        />
         
         <AnimatedCard delay={200} className="mb-8">
           <div className="bg-muted/50 rounded-lg p-6">
