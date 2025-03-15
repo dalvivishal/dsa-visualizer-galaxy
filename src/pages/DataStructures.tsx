@@ -2,6 +2,9 @@
 import React from 'react';
 import { Layout } from '@/components/Layout';
 import LinkedListVisualizer from '@/components/visualizations/LinkedListVisualizer';
+import StackVisualizer from '@/components/visualizations/StackVisualizer';
+import QueueVisualizer from '@/components/visualizations/QueueVisualizer';
+import HashTableVisualizer from '@/components/visualizations/HashTableVisualizer';
 import AnimatedCard from '@/components/ui/AnimatedCard';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
@@ -22,13 +25,25 @@ const DataStructures = () => {
           <Tabs defaultValue="linkedList">
             <TabsList className="mb-4">
               <TabsTrigger value="linkedList">Linked List</TabsTrigger>
-              <TabsTrigger value="stack" disabled>Stack (Coming Soon)</TabsTrigger>
-              <TabsTrigger value="queue" disabled>Queue (Coming Soon)</TabsTrigger>
-              <TabsTrigger value="hashTable" disabled>Hash Table (Coming Soon)</TabsTrigger>
+              <TabsTrigger value="stack">Stack</TabsTrigger>
+              <TabsTrigger value="queue">Queue</TabsTrigger>
+              <TabsTrigger value="hashTable">Hash Table</TabsTrigger>
             </TabsList>
             
             <TabsContent value="linkedList">
               <LinkedListVisualizer className="mb-8" />
+            </TabsContent>
+            
+            <TabsContent value="stack">
+              <StackVisualizer className="mb-8" />
+            </TabsContent>
+            
+            <TabsContent value="queue">
+              <QueueVisualizer className="mb-8" />
+            </TabsContent>
+            
+            <TabsContent value="hashTable">
+              <HashTableVisualizer className="mb-8" />
             </TabsContent>
           </Tabs>
         </AnimatedCard>

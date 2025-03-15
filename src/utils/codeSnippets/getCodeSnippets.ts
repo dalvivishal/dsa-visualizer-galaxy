@@ -18,6 +18,11 @@ import {
   dijkstraSnippets
 } from './graphSnippets';
 
+import {
+  knapsackSnippets,
+  lcsSnippets
+} from './dpSnippets';
+
 // Get code snippets for a specific algorithm
 export const getCodeSnippetsForAlgorithm = (algorithm: string) => {
   switch (algorithm) {
@@ -41,6 +46,10 @@ export const getCodeSnippetsForAlgorithm = (algorithm: string) => {
       return bfsSnippets;
     case 'dijkstra':
       return dijkstraSnippets;
+    case 'knapsack':
+      return knapsackSnippets;
+    case 'lcs':
+      return lcsSnippets;
     default:
       return [];
   }
