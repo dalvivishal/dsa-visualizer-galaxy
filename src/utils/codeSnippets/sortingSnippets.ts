@@ -201,7 +201,7 @@ export const quickSortSnippets = [
   {
     id: 'quickCheck',
     code: '  if (low < high) {',
-    description: 'Check if there's more than one element to sort'
+    description: 'Check if there\'s more than one element to sort'
   },
   {
     id: 'quickPartition',
