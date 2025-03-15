@@ -1,11 +1,10 @@
-
 import React, { useState, useEffect } from 'react';
 import { Layout } from '@/components/Layout';
 import PathfindingVisualizer from '@/components/visualizations/PathfindingVisualizer';
 import AnimatedCard from '@/components/ui/AnimatedCard';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import CodeExecutionVisualizer from '@/components/visualizations/CodeExecutionVisualizer';
-import { getCodeSnippetsForAlgorithm } from '@/utils/algorithmCodeSnippets';
+import { getCodeSnippetsForAlgorithm } from '@/utils/codeSnippets';
 
 const Graphs = () => {
   const [algorithm, setAlgorithm] = useState<string>('bfs');

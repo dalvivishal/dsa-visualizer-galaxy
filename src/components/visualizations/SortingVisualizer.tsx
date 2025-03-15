@@ -19,7 +19,10 @@ import {
 } from '@/components/ui/select';
 import VisualizerControls from '@/components/ui/VisualizerControls';
 import CodeExecutionVisualizer from '@/components/visualizations/CodeExecutionVisualizer';
-import { getCodeSnippetsForAlgorithm, mapSortingStepToCodeSnippet } from '@/utils/algorithmCodeSnippets';
+import { 
+  getCodeSnippetsForAlgorithm, 
+  mapSortingStepToCodeSnippet 
+} from '@/utils/codeSnippets';
 import { toast } from 'sonner';
 import AnimatedCard from '@/components/ui/AnimatedCard';
 
