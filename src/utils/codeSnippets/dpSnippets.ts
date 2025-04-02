@@ -5,8 +5,7 @@ import { CodeSnippet } from '@/components/visualizations/CodeExecutionVisualizer
 export const knapsackSnippets: CodeSnippet[] = [
   {
     id: 'knapsack-intro',
-    title: 'Knapsack Problem',
-    language: 'typescript',
+    description: 'Knapsack Problem',
     code: `/**
  * 0/1 Knapsack Problem
  * 
@@ -45,8 +44,7 @@ function knapsack(values: number[], weights: number[], capacity: number): number
   },
   {
     id: 'knapsack-init',
-    title: 'Initialize DP Table',
-    language: 'typescript',
+    description: 'Initialize DP Table',
     code: `// Create a 2D array for memoization
 const dp = Array(n + 1).fill(null).map(() => Array(capacity + 1).fill(0));
 
@@ -55,8 +53,7 @@ const dp = Array(n + 1).fill(null).map(() => Array(capacity + 1).fill(0));
   },
   {
     id: 'knapsack-fill',
-    title: 'Fill DP Table',
-    language: 'typescript',
+    description: 'Fill DP Table',
     code: `// Build the dp table bottom-up
 for (let i = 1; i <= n; i++) {
   for (let w = 0; w <= capacity; w++) {
@@ -79,8 +76,7 @@ for (let i = 1; i <= n; i++) {
   },
   {
     id: 'knapsack-backtrack',
-    title: 'Backtrack for Solution',
-    language: 'typescript',
+    description: 'Backtrack for Solution',
     code: `function backtrackSolution(dp: number[][], weights: number[], n: number, capacity: number): number[] {
   const result: number[] = [];
   let w = capacity;
@@ -103,8 +99,7 @@ for (let i = 1; i <= n; i++) {
 export const lcsSnippets: CodeSnippet[] = [
   {
     id: 'lcs-intro',
-    title: 'Longest Common Subsequence',
-    language: 'typescript',
+    description: 'Longest Common Subsequence',
     code: `/**
  * Longest Common Subsequence (LCS)
  * 
@@ -138,8 +133,7 @@ function longestCommonSubsequence(text1: string, text2: string): string {
   },
   {
     id: 'lcs-init',
-    title: 'Initialize DP Table',
-    language: 'typescript',
+    description: 'Initialize DP Table',
     code: `// Create a 2D array for memoization
 const dp = Array(m + 1).fill(null).map(() => Array(n + 1).fill(0));
 
@@ -147,8 +141,7 @@ const dp = Array(m + 1).fill(null).map(() => Array(n + 1).fill(0));
   },
   {
     id: 'lcs-fill',
-    title: 'Fill DP Table',
-    language: 'typescript',
+    description: 'Fill DP Table',
     code: `// Fill the dp table
 for (let i = 1; i <= m; i++) {
   for (let j = 1; j <= n; j++) {
@@ -164,8 +157,7 @@ for (let i = 1; i <= m; i++) {
   },
   {
     id: 'lcs-backtrack',
-    title: 'Backtrack for Solution',
-    language: 'typescript',
+    description: 'Backtrack for Solution',
     code: `function backtrackLCS(
   dp: number[][], 
   text1: string, 
